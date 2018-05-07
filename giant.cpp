@@ -3,7 +3,6 @@ Read in generated networks and calculate size of largest component
 
 TODO: make a lite version to share on GitHub, all in one file (giant-lite)
 TODO: keep developing this version, adding
-  - Graph class in its own file, with Catch tests. Add exceptions to the library
   - Good style, C++ linting
   - Boost dependencies for connected components, command-line parsing
   - Other zero-one laws besides the giant component
@@ -48,26 +47,45 @@ int main(int argc, char* argv[]) {
   }
   cout << "n = " << n << endl;
 
-  // std::ofstream fout;
-  // fout.open(out_name);
-  // for (int k = 0; k < edges.size(); ++k) {
-  //   pedge e = edges[k];
-  //   fout << e.p << " " << e.i << " " << e.j << endl;
-  // }
-  // fout.close();
+  vector<double> ratios;
+  for (int i = 0; i <= 15; ++i) {
+    ratios.push_back(0.1 * i);
+  }
+  for (int i = 4; i <= ceil(log(1.0*n))*2; ++i) {
+    ratios.push_back(0.5 * i);
+  }
+
+  vector<double> thresholds;
+  for (int i = 0; i < ratios.size(); ++i) {
+    thresholds.push_back(ratios[i] / (n - 1.0));
+  }
+
+  std::ifstream fin;
+  fin.open(in_name);
+
+  double p;
+  int a, b;
+  k = 0;
+  vector<int> max_sizes;
+  Graph g(n);
+  while (fin >> p >> a >> b) {
+    while (p >= thresholds[k]) {
+      max_sizes.push_back(g.get_largest_component());
+      ++k;
+    }
+    g.add_edge(a, b);
+  }
+  while (k < thresholds.size()) {
+    max_sizes.push_back(g.get_largest_component());
+    ++k;
+  }
+
+  std::ofstream fout;
+  fout.open(out_name);
+  for (int i = 0; i < ratios.size(); ++i) {
+    fout << ratios[i] << " " << max_sizes[i] << endl;
+  }
+  fout.close();
 
   return 0;
 }
-
-  // Graph g(5);
-  // cout << g.get_largest_component() << endl;  // 1
-  // g.add_edge(0, 1);
-  // cout << g.get_largest_component() << endl;  // 2
-  // g.add_edge(1, 2);
-  // cout << g.get_largest_component() << endl;  // 3
-  // g.add_edge(3, 4);
-  // cout << g.get_largest_component() << endl;  // 3
-  // g.add_edge(0, 2);
-  // cout << g.get_largest_component() << endl;  // 3
-  // g.add_edge(1, 4);
-  // cout << g.get_largest_component() << endl;  // 5
