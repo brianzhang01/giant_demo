@@ -4,6 +4,7 @@ Graph class for connected components
 #include "graph.hpp"
 
 // Constructor
+// TODO: copy constructor?
 Graph::Graph(int _n) : n(_n) {
   parents.resize(n);
   sizes.resize(n);
@@ -15,6 +16,7 @@ void Graph::clear_edges() {
     parents[i] = i;
     sizes[i] = 1;
   }
+  max_size = 1;
 }
 
 // Adds an edge using union by size
@@ -31,20 +33,12 @@ void Graph::add_edge(int a, int b) {
     if (sizes[a] >= sizes[b]) {
       parents[b] = a;
       sizes[a] += sizes[b];
+      max_size = std::max(max_size, sizes[a]);
     }
     else {
       parents[a] = b;
       sizes[b] += sizes[a];
+      max_size = std::max(max_size, sizes[b]);
     }
   }
-}
-
-int Graph::get_largest_component() {
-  int max_size = 0;
-  for (int i = 0; i < n; ++i) {
-    if (parents[i] == i) {
-      max_size = std::max(sizes[i], max_size);
-    }
-  }
-  return max_size;
 }

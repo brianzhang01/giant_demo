@@ -16,10 +16,11 @@ public:
   Graph(int _n);
   void clear_edges();
   void add_edge(int a, int b);
-  int get_largest_component();
+  int get_largest_component() { return max_size; }
   int size() { return n; }
 private:
   int n;
+  int max_size;
   vector<int> parents;
   vector<int> sizes;
 };

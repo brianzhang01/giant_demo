@@ -1,4 +1,4 @@
-#define CATCH_CONFIG_MAIN
+// Tests for graph.cpp / graph.hpp
 #include "catch.hpp"
 #include "graph.hpp"
 
