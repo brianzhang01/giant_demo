@@ -1,11 +1,5 @@
 /*
 Read in generated networks and calculate size of largest component
-
-TODO: make a lite version to share on GitHub, all in one file (giant-lite)
-TODO: keep developing this version, adding
-  - Good style, C++ linting
-  - Boost dependencies for connected components, command-line parsing
-  - Other zero-one laws besides the giant component
 */
 #include "graph.hpp"
 
