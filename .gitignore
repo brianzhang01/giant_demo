@@ -2,4 +2,5 @@
 *.o
 out/
 *.out
+figs/
 .DS_Store
